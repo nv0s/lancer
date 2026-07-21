@@ -27,10 +27,14 @@ SIZE 1/2 · HP 6 · EVASION 10 · E-DEFENSE 10 · SPEED 4
 - **Signature Weapon, Medium** — kinetic marksman's rifle, R5, 2 damage
 - **Signature Weapon, Light** — kinetic sidearm, R3, 1 damage
 - Aviators (cosmetic), grapple line, extra rations
+- **Camo Cloth** (looted) — reactive material, ~10 seconds to blend into surroundings
+- **Frag Grenades** (looted, Limited 2) — Grenade, R5, Blast 1; AGILITY save or 2 damage
+- **HA Energy Sidearm** (trophy) — Harrison Armory make, needs HA license to use properly
+- **HA flight recorder** (evidence) — unit designation + deployment authorization data proving Harrison Armory armed Cassian Vantage Security
 
 ---
 
-# Mech: *(unnamed — Lee's call)*
+# Mech: *Ungoliant*
 
 **Frame:** GMS-SP1 Everest — reflavored as a hexapedal, low-profile stealth chassis (cosmetic only, per core rules: frame appearance has no mechanical effect). Long-term goal: license into Smith-Shimano Corpro toward the **Death's Head**, SSC's actual hexapedal sniper frame, once LL and license ranks allow (License II SSC).
 
