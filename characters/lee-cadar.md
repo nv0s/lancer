@@ -13,6 +13,7 @@ Grew up on a nameless backwater world; left the day the first merc outfit that t
 - **Act Unseen or Unheard** — move, hide, or operate without detection
 - **Hack or Fix** — break into or repair electronic systems
 - **Show Off** — do something flashy or impressive, usually with a gun
+- **Spot** — notice hidden details, ambushes, or disguises; spy on distant targets; track people or vehicles
 
 ## Pilot Combat Stats
 SIZE 1/2 · HP 6 · EVASION 10 · E-DEFENSE 10 · SPEED 4
