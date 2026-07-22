@@ -1,6 +1,6 @@
 # The Squad
 
-Lee's team — a small independent mercenary outfit operating on the frontier.
+Lee's team — a small independent mercenary outfit operating on the frontier. Full pilot and mech sheets, LL1.
 
 - [Voss "Doc" Amara](voss-amara.md) — Support (IPS-N Lancaster)
 - [Kessa "Bull" Draye](kessa-draye.md) — Defender (IPS-N Drake)
