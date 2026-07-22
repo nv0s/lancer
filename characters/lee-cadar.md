@@ -1,8 +1,8 @@
 # Lee "Envy" Cadar
 
-**License Level:** LL0
+**License Level:** LL1
 **Background:** Mercenary
-**Grit:** 0 (first point at LL1)
+**Grit:** 1
 
 6'4", lean, bald, bearded. Red mechanic's jumpsuit with light plating underneath. Never without his aviators. Cocky, sharp, allergic to being seen unless he wants to be.
 
@@ -17,10 +17,10 @@ Grew up on a nameless backwater world; left the day the first merc outfit that t
 ## Pilot Combat Stats
 SIZE 1/2 · HP 6 · EVASION 10 · E-DEFENSE 10 · SPEED 4
 
-## Talents (Rank I)
-- **Crack Shot** — *Stable, Steady*: as a protocol, steady your aim (become IMMOBILIZED until your next turn) for +1 accuracy on all RIFLE attacks. *Zero In*: while steadying and attacking with a RIFLE, 1/round gain +1 accuracy and +1d6 bonus damage on a crit.
-- **Infiltrator** — *Prowl*: on your turn, entering enemy line of sight or leaving cover doesn't break HIDDEN; you can pass through (not end in) enemy spaces; you can HIDE even in plain sight. Ends at the end of your turn.
-- **Hacker** — *Snow_Crash*: when you hit with a tech attack that consumes LOCK ON, target must choose to take 2 heat damage or be pushed 3 spaces.
+## Talents
+- **Crack Shot** (Rank I) — *Stable, Steady*: as a protocol, steady your aim (become IMMOBILIZED until your next turn) for +1 accuracy on all RIFLE attacks. *Zero In*: while steadying and attacking with a RIFLE, 1/round gain +1 accuracy and +1d6 bonus damage on a crit.
+- **Infiltrator** (Rank II) — *Prowl*: on your turn, entering enemy line of sight or leaving cover doesn't break HIDDEN; you can pass through (not end in) enemy spaces; you can HIDE even in plain sight. Ends at the end of your turn. *Ambush*: when you start your turn HIDDEN, your first attack roll forces a HULL save on the target or they become SLOWED, IMPAIRED, and can't take reactions until end of their next turn.
+- **Brutal** (Rank I) — *Predator*: natural 20 crits deal maximum possible damage (including bonus damage).
 
 ## Pilot Gear
 - **Light Hardsuit** (his jumpsuit, reinforced) — +3 HP, Armor 0, Evasion 10, E-Defense 10, Speed 4
@@ -45,15 +45,15 @@ Size 1 · Armor 0 · Save Target 10 · Sensors 10
 |---|---|---|
 | HP | 12 | 10 base + 2 (Personalizations) |
 | Repair Cap | 5 | base |
-| Evasion | 9 | 8 base + 1 (Agility 1) |
-| Speed | 4 | base |
+| Evasion | 10 | 8 base + 2 (Agility 2) |
+| Speed | 5 | 4 base + 1 (Agility 2) |
 | E-Defense | 9 | 8 base + 1 (Systems 1) |
 | Tech Attack | +1 | base +0 + 1 (Systems 1) |
 | Heat Cap | 6 | base |
 | SP | 6 | base |
 
 ## Mech Skills
-Hull 0 · **Agility 1** · **Systems 1** · Engineering 0
+Hull 0 · **Agility 2** · **Systems 1** · Engineering 0
 
 ## Traits (from Everest frame)
 - **Initiative** — 1/scene, take any quick action as a free action
