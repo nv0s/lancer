@@ -15,7 +15,4 @@ A Harrison Armory "advisor" was confirmed embedded with Vantage directly, meanin
 1. [The Rill's End Contract](jobs/01-rills-end-contract.md) — Complete. Sato's cooperative hires the crew to break Vantage's grip; escalating pressure hits provoke Vantage into overcommitting, ending with the depot assault and hard proof of HA's involvement.
 
 ## Open Threads
-Carried forward into whatever comes next:
-- Identity and backers of the second outfit, **Ossuary Freight** — transponder ID recovered, ownership still unconfirmed.
-- Harrison Armory's real stake in the operation — hard documentary proof recovered (the convoy manifests and the depot flight recorder) that HA knowingly armed Vantage, but nothing's been done with that evidence yet.
-- Sato's claim has no clean title — the recovered materiel and the political fallout of taking on a Harrison Armory-linked operation are both still live risks for Rill's End.
+This arc raised several — tracked centrally in [`open-threads.md`](../../open-threads.md) rather than duplicated here, since they may carry forward past this arc.

@@ -13,5 +13,8 @@
 ## Arcs
 1. [The Vantage Tariff Racket](arcs/01-vantage-tariff-racket/arc.md) — **Complete.** Rill's End's illegal tariff racket exposed and dismantled; hard proof recovered that Harrison Armory was arming it. Session 0, 2026-07-20.
 
+## Open Threads
+Tracked campaign-wide in [`open-threads.md`](open-threads.md), not per-arc — a thread raised in one arc often gets resolved in a later one.
+
 ---
-*Log updated as the campaign progresses. Each arc has its own folder under `arcs/`, broken down job by job — see the arc file for the full job list and open threads.*
+*Log updated as the campaign progresses. Each arc has its own folder under `arcs/`, broken down job by job — see the arc file for the full job list.*
