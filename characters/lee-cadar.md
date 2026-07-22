@@ -31,7 +31,6 @@ SIZE 1/2 · HP 6 · EVASION 10 · E-DEFENSE 10 · SPEED 4
 - **Camo Cloth** (looted) — reactive material, ~10 seconds to blend into surroundings
 - **Frag Grenades** (looted, Limited 2) — Grenade, R5, Blast 1; AGILITY save or 2 damage
 - **HA Energy Sidearm** (trophy) — Harrison Armory make, needs HA license to use properly
-- **HA flight recorder** (evidence) — unit designation + deployment authorization data proving Harrison Armory armed Cassian Vantage Security
 
 ---
 
@@ -64,7 +63,7 @@ Hull 0 · **Agility 2** · **Systems 1** · Engineering 0
 **Hyperspec Fuel Injector** (*Power Up*, Active 1CP, Protocol) — for the rest of the scene, +1 accuracy on all attacks, checks, and saves; 1/turn, BOOST as a free action.
 
 ## Mounts
-- **Heavy:** Anti-Materiel Rifle — Heavy Rifle, ACCURATE/AP/LOADING/ORDNANCE, R20, 2d6
+- **Heavy:** SSC Rail Gun — Heavy Rifle, ACCURATE/AP/LOADING/KNOCKBACK 1, R20, 2d6 — traded from SSC for the HA flight recorder + manifests; same weapon system that arms the Death's Head. Replaced the Anti-Materiel Rifle (crated for resale).
 - **Main:** Assault Rifle — Main Rifle, RELIABLE 2, R10, 1d6
 - **Flex:** Pistol — Auxiliary CQB, RELIABLE 1, R5/3, 1d3
 
