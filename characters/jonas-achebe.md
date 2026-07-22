@@ -34,14 +34,16 @@ Size 1 · Armor 0 · Save Target 10 · Sensors 5
 
 | Stat | Value | Source |
 |---|---|---|
-| HP | 10 | 8 base + 2 (Hull 1) |
+| HP | 11 | 8 base + 2 (Hull 1) + 1 (Grit) |
 | Repair Cap | 5 | base |
 | Evasion | 13 | 11 base + 2 (Agility 2) |
 | Speed | 6 | 5 base + 1 (Agility 2) |
 | E-Defense | 7 | base |
 | Tech Attack | +0 | base |
 | Heat Cap | 6 | base |
-| SP | 6 | base |
+| SP | 7 | 6 base + 1 (Grit) |
+| Save Target | 11 | 10 base + 1 (Grit) |
+| Attack Rolls | +1 | Grit bonus applies to all mech attack rolls |
 
 ## Mech Skills
 **Hull 1** · **Agility 2** · Systems 0 · Engineering 0

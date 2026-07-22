@@ -13,6 +13,7 @@
 ## Arcs
 1. [The Vantage Tariff Racket](arcs/01-vantage-tariff-racket/arc.md) — **Complete.** Rill's End's illegal tariff racket exposed and dismantled; hard proof recovered that Harrison Armory was arming it. Session 0, 2026-07-20.
 2. [The SSC Overture](arcs/02-ssc-overture/arc.md) — **Active.** Lee shops the HA evidence to Smith-Shimano Corpro in trade for hardware. Session 1, 2026-07-22.
+3. [The Corvo Reach Run](arcs/03-corvo-reach-run/arc.md) — **Complete.** Straightforward escort contract for Halvorsen Freight Concern turns up a bigger raider network. Session 2, 2026-07-22.
 
 ## Open Threads
 Tracked campaign-wide in [`open-threads.md`](open-threads.md), not per-arc — a thread raised in one arc often gets resolved in a later one.

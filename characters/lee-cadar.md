@@ -16,7 +16,7 @@ Grew up on a nameless backwater world; left the day the first merc outfit that t
 - **Spot** — notice hidden details, ambushes, or disguises; spy on distant targets; track people or vehicles
 
 ## Pilot Combat Stats
-SIZE 1/2 · HP 6 · EVASION 10 · E-DEFENSE 10 · SPEED 4
+SIZE 1/2 · HP 7 (6 base + 1 Grit) · EVASION 10 · E-DEFENSE 10 · SPEED 4
 
 ## Talents
 - **Crack Shot** (Rank I) — *Stable, Steady*: as a protocol, steady your aim (become IMMOBILIZED until your next turn) for +1 accuracy on all RIFLE attacks. *Zero In*: while steadying and attacking with a RIFLE, 1/round gain +1 accuracy and +1d6 bonus damage on a crit.
@@ -31,6 +31,7 @@ SIZE 1/2 · HP 6 · EVASION 10 · E-DEFENSE 10 · SPEED 4
 - **Camo Cloth** (looted) — reactive material, ~10 seconds to blend into surroundings
 - **Frag Grenades** (looted, Limited 2) — Grenade, R5, Blast 1; AGILITY save or 2 damage
 - **HA Energy Sidearm** (trophy) — Harrison Armory make, needs HA license to use properly
+- **Kinetic Cannon** (crew stores) — salvaged from the Corvo Raider hideout; not currently mounted (Ungoliant's mounts are full), held in reserve
 
 ---
 
@@ -39,18 +40,20 @@ SIZE 1/2 · HP 6 · EVASION 10 · E-DEFENSE 10 · SPEED 4
 **Frame:** GMS-SP1 Everest — reflavored as a hexapedal, low-profile stealth chassis (cosmetic only, per core rules: frame appearance has no mechanical effect). Long-term goal: license into Smith-Shimano Corpro toward the **Death's Head**, SSC's actual hexapedal sniper frame, once LL and license ranks allow (License II SSC).
 
 ## Core Stats
-Size 1 · Armor 0 · Save Target 10 · Sensors 10
+Size 1 · Armor 0 · Sensors 10
 
 | Stat | Value | Source |
 |---|---|---|
-| HP | 12 | 10 base + 2 (Personalizations) |
+| HP | 13 | 10 base + 2 (Personalizations) + 1 (Grit) |
 | Repair Cap | 5 | base |
 | Evasion | 10 | 8 base + 2 (Agility 2) |
 | Speed | 5 | 4 base + 1 (Agility 2) |
 | E-Defense | 9 | 8 base + 1 (Systems 1) |
 | Tech Attack | +1 | base +0 + 1 (Systems 1) |
 | Heat Cap | 6 | base |
-| SP | 6 | base |
+| SP | 7 | 6 base + 1 (Grit) |
+| Save Target | 11 | 10 base + 1 (Grit) |
+| Attack Rolls | +1 | Grit bonus applies to all mech attack rolls |
 
 ## Mech Skills
 Hull 0 · **Agility 2** · **Systems 1** · Engineering 0

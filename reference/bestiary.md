@@ -22,5 +22,15 @@ Weapon: Precision Rifle (Main Rifle, ACCURATE, R10, 1d6+2)
 Weapon: Siege Cannon (Heavy Cannon, ORDNANCE, R15, 3d6+2)
 *Loosely based on the Harrison Armory Barbarossa (Artillery). Huge, slow, hits like a truck, but its ORDNANCE weapon goes quiet if you close to melee range and can't fire after moving. Destroyed at the Vantage depot — but HA fields these elsewhere; treat as a recurring "boss tier" statline if HA shows up again.*
 
+## Corvo Reach Raiders ("the Undertow")
+
+**Corvo Raider** — Size 1 · HP 6 · Evasion 7 · Armor 0 · E-Defense 6 · Speed 5
+Weapon: Raider Autocannon (Main Cannon, R8, 1d6+1)
+*Mook-tier, faster and slightly more accurate than Vantage's walkers. Independent raider cell muscle.*
+
+**Raider Captain** — Size 1 · HP 12 · Evasion 9 · Armor 1 · E-Defense 8 · Speed 5 · Save Target 10
+Weapon: Boarding Lance (Heavy Melee, R1, 2d6+1)
+*Leader tier, melee-focused — a different tactical problem than Vantage/Ossuary's ranged leader units. Destroyed in the Halvorsen escort ambush; the Undertow network behind this cell is still out there.*
+
 ---
 *Add new entries here as new enemy types appear, rather than reinventing stats each time.*
