@@ -11,10 +11,15 @@ This repo is a running LANCER (Massif Press mecha TTRPG) tabletop campaign. Clau
 - `gm-reference.md` — core rules quick-reference (turn order, actions, tags) for mid-session lookup.
 - `gm-reminders.md` — ruling mistakes that got corrected more than once; check before running a scene if something feels like a repeat.
 - `bestiary.md` — enemy stat blocks encountered or prepped so far.
-- `campaign-log.md` — source of truth for what's happened: setting primer, house rules, and a session-by-session log ending in "Open Threads."
+- `campaign-log.md` — top-level index: setting primer, house rules, and a list of story arcs with status and links. Not the source of narrative detail itself — that lives under `arcs/`.
+- `arcs/NN-arc-slug/arc.md` — one story arc's hook, summary, job list, and Open Threads. An arc is the overarching story; it's marked **Active** or **Complete**.
+- `arcs/NN-arc-slug/jobs/NN-job-slug.md` — one job (a mission/contract) within that arc. Usually many jobs make up an arc, but a single long job can be the whole arc.
 
 ## Working conventions
-- **Resuming:** read the tail of `campaign-log.md` (recent hits + Open Threads) and `characters/lee-cadar.md` before picking play back up — don't ask the player to re-summarize what's already recorded here.
+- **Resuming:** find the most recent **Active** arc in `campaign-log.md`, read its `arc.md` (summary + Open Threads) and its latest job file, plus `characters/lee-cadar.md`, before picking play back up — don't ask the player to re-summarize what's already recorded here.
+- **New arc:** when the story's overarching focus shifts (a new contract, a new antagonist, a resolved arc's Open Threads spinning up the next hook), create a new `arcs/NN-arc-slug/` folder with an `arc.md` and a `jobs/` subfolder, and add it to the list in `campaign-log.md`.
+- **New job:** each mission/contract within the current arc gets its own file under that arc's `jobs/` folder, added to the job list in the arc's `arc.md`.
+- **Closing an arc:** update its `arc.md` status to Complete and reconcile its Open Threads — resolved ones get removed or noted as resolved, unresolved ones either stay open or seed the next arc's hook.
 - **Combat:** check `gm-reminders.md` first — it exists specifically to stop the same rulings from being gotten wrong twice.
 - **Character changes** (level-ups, gear, injuries): edit the relevant character file directly, don't just narrate it and leave the sheet stale.
 - **Commit and push after updates** — this repo, including git history, is the durable record of the campaign.
