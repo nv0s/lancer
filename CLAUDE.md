@@ -11,6 +11,11 @@ This repo is a running LANCER (Massif Press mecha TTRPG) tabletop campaign. Clau
 - `reference/gm-reference.md` — core rules quick-reference (turn order, actions, tags) for mid-session lookup.
 - `reference/gm-reminders.md` — ruling mistakes that got corrected more than once; check before running a scene if something feels like a repeat.
 - `reference/combat-display.md` — how combat is presented to the player (battle-state block, dice-roll detail, turn-order style). Follow this for every fight.
+- `reference/loot-display.md` — how loot/salvage gets listed and allocated after a fight or search.
+- `reference/interrogation-resolution.md` — the two-roll (gate, then benefit) system for interrogating captured NPCs.
+- `reference/downtime-resolution.md` — the structured downtime-action menu and outcome tiers.
+- `reference/reward-negotiation.md` — how negotiating a job's payout works, including when it's a free-form ask vs. an actual roll.
+- `reference/leveling-presentation.md` — when level-ups get offered and how much detail to front-load vs. let the player ask for.
 - `reference/bestiary.md` — enemy stat blocks encountered or prepped so far.
 - `reference/Lancer - Free Version.pdf` — the core rulebook itself.
 
