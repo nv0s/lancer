@@ -1,7 +1,7 @@
 # Job 1: Shopping the Evidence
 
 **Arc:** [The SSC Overture](../arc.md)
-**Status:** Active
+**Status:** Complete
 **Contact:** Priya Okafor, SSC regional procurement liaison
 
 Two days after the Vantage depot fell, with the crew resting up in Rill's End and Sato working through the recovered materiel, Lee decided the HA flight recorder and manifests were worth more as leverage than as a trophy. Word through old merc-network contacts found a buyer fast: Smith-Shimano Corpro, a bitter rival of Harrison Armory, very interested in documentary proof HA armed an illegal frontier tariff racket.
