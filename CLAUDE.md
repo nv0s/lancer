@@ -10,6 +10,7 @@ This repo is a running LANCER (Massif Press mecha TTRPG) tabletop campaign. Clau
 - `reference/talents-reference.md`, `reference/triggers-reference.md` — full core-rulebook text, used when leveling up or picking new options.
 - `reference/gm-reference.md` — core rules quick-reference (turn order, actions, tags) for mid-session lookup.
 - `reference/gm-reminders.md` — ruling mistakes that got corrected more than once; check before running a scene if something feels like a repeat.
+- `reference/combat-display.md` — how combat is presented to the player (battle-state block, dice-roll detail, turn-order style). Follow this for every fight.
 - `reference/bestiary.md` — enemy stat blocks encountered or prepped so far.
 - `reference/Lancer - Free Version.pdf` — the core rulebook itself.
 
@@ -25,7 +26,7 @@ This repo is a running LANCER (Massif Press mecha TTRPG) tabletop campaign. Clau
 - **New job:** each mission/contract within the current arc gets its own file under that arc's `jobs/` folder, added to the job list in the arc's `arc.md`. Multiple fights within the same job are sections in that one file, not separate job files.
 - **Open threads:** add new ones to `story/open-threads.md` as they come up, with a link back to the job that raised them. When one resolves, move it from Active to Resolved with a link to where that happened — don't just delete it.
 - **Closing an arc:** update its `arc.md` status to Complete.
-- **Combat:** check `reference/gm-reminders.md` first — it exists specifically to stop the same rulings from being gotten wrong twice.
+- **Combat:** check `reference/gm-reminders.md` first — it exists specifically to stop the same rulings from being gotten wrong twice. Present it per `reference/combat-display.md`.
 - **Character changes** (level-ups, gear, injuries): edit the relevant character file directly, don't just narrate it and leave the sheet stale.
 - **Commit and push after updates** — this repo, including git history, is the durable record of the campaign.
 - Campaign state belongs in these files, not in Claude's cross-session memory — memory is only for things like "where does this repo live," not campaign content that already lives here.
