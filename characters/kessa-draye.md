@@ -60,7 +60,7 @@ Size 2 · Armor 3 · Save Target 10 · Sensors 10
 ## Mounts
 - **Main:** Assault Cannon — Main Cannon, Overkill, 1 heat (self), R8, 1d6+2 kinetic. Can spin up barrels as a quick action for Reliable 3, but becomes Slowed while spinning; ends as a protocol.
 - **Main:** unequipped — reserve slot for future loot
-- **Heavy:** unequipped — reserve slot for future loot
+- **Heavy:** Halvorsen Point-Defense Battery — Heavy Cannon, ARCING, KNOCKBACK 2, R10, 2d6 kinetic — reward from Halvorsen Freight Concern for the Tallow Point job; surplus hardware from their contracted escort fleet, built to knock boarders off cargo hulls.
 
 ## Systems (2/5 SP)
 - **Argonaut Shield** (2 SP, Unique, Quick Action) — overarm shield gives an adjacent ally Resistance to all damage; Bull takes half of what they'd have taken first. Lasts until the target breaks adjacency.

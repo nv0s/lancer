@@ -9,11 +9,15 @@ Running list of unresolved plot threads across the whole campaign — not scoped
   *Originated:* [The Rill's End Contract](arcs/01-vantage-tariff-racket/jobs/01-rills-end-contract.md)
 - **Rill's End is now named in SSC's case file against Harrison Armory** — Lee gave up Sato's name and the colony's location to close the trade. Real backing from SSC if that ever comes due, but also a name HA will eventually connect to their missing evidence.
   *Originated:* [Shopping the Evidence](arcs/02-ssc-overture/jobs/01-shopping-the-evidence.md)
-- **"The Undertow"** — a raider network running multiple cells across the Corvo Reach, taking a cut from each hit. A captured raider gave up the callsign but not a name or location.
-  *Originated:* [The Halvorsen Escort](arcs/03-corvo-reach-run/jobs/01-halvorsen-escort.md)
-- **A leak inside (or adjacent to) Halvorsen Freight Concern** — the raiders had advance knowledge of the *Long Ledger*'s schedule, paid for through a broker. Halvorsen doesn't know yet.
-  *Originated:* [The Halvorsen Escort](arcs/03-corvo-reach-run/jobs/01-halvorsen-escort.md)
+- **The Undertow's full client ledger** — Wren Osei's console had months of leaked schedules and buyers across the Corvo Reach, not just Halvorsen. Whether Osei was the whole operation or just its most visible node is unconfirmed; the ledger implies more cells and more victims still out there.
+  *Originated:* [Tallow Point](arcs/04-the-undertow/jobs/01-tallow-point.md)
+- **Encrypted data slate** — personal effects stripped from Wren Osei's ship before handover to Halvorsen. Not Halvorsen's property, not yet cracked. Held in Lee's crew stores.
+  *Originated:* [Tallow Point](arcs/04-the-undertow/jobs/01-tallow-point.md)
 
 ## Resolved
 - **Harrison Armory's real stake in the Vantage operation** — traded to Smith-Shimano Corpro (flight recorder + manifests, full disclosure) in exchange for an SSC military-spec rail gun. HA's arming of Vantage is now SSC's problem to weaponize, not the crew's evidence to sit on.
   *Resolved in:* [Shopping the Evidence](arcs/02-ssc-overture/jobs/01-shopping-the-evidence.md)
+- **"The Undertow"** — traced to a fixer, "the Actuary" (real name Wren Osei), captured alive at Tallow Point along with a full client ledger. Handed over to Halvorsen's custody.
+  *Resolved in:* [Tallow Point](arcs/04-the-undertow/jobs/01-tallow-point.md)
+- **A leak inside (or adjacent to) Halvorsen Freight Concern** — identified as dispatch coordinator Teo Marsh via the recovered ledger. Halvorsen is handling it internally.
+  *Resolved in:* [Tallow Point](arcs/04-the-undertow/jobs/01-tallow-point.md)

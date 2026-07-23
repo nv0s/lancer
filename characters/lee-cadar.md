@@ -32,6 +32,8 @@ SIZE 1/2 · HP 7 (6 base + 1 Grit) · EVASION 10 · E-DEFENSE 10 · SPEED 4
 - **Frag Grenades** (looted, Limited 2) — Grenade, R5, Blast 1; AGILITY save or 2 damage
 - **HA Energy Sidearm** (trophy) — Harrison Armory make, needs HA license to use properly
 - **Kinetic Cannon** (crew stores) — salvaged from the Corvo Raider hideout; not currently mounted (Ungoliant's mounts are full), held in reserve
+- **Encrypted Data Slate** (crew stores) — personal effects stripped from Wren Osei's ship before handover to Halvorsen; not yet cracked
+- **9,000c** (crew funds) — 6,000c reward from Halvorsen Freight Concern (Tallow Point job) + 3,000c loose scrip stripped from Wren Osei's ship
 
 ---
 
