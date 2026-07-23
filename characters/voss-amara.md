@@ -60,7 +60,7 @@ Hull 0 · **Agility 1** · **Systems 2** · Engineering 0
 **Supercharger** (*Active, 1CP, Quick Action*) — the Latch Drone clamps onto an allied mech within range; for the rest of the scene that ally takes 1 heat at the start of each of Doc's turns, but gains +1 accuracy on all attacks/checks/saves and immunity to Impaired, Jammed, Slowed, Shredded, and Immobilized from other sources. Ends if either character is Stunned. While active, the Latch Drone can't be used for its normal repair function.
 
 ## Mounts
-- **Main/Aux:** unequipped — Doc's kit centers on keeping the squad alive and running, not on offense
+- **Main/Aux:** Precision Rifle — Main Rifle, ACCURATE, R10, 1d6+2 — purchased (3,500c) for reach and reliability without pulling Doc away from her support role; mid-range, hard to miss with.
 
 ## Systems (3/8 SP)
 - **Cable Winch System** (1 SP, Quick Action) — attach cables to an adjacent character to tow, drag, or restrain them; also usable to climb surfaces or interact with the environment

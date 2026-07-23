@@ -59,7 +59,7 @@ Size 2 · Armor 3 · Save Target 10 · Sensors 10
 
 ## Mounts
 - **Main:** Assault Cannon — Main Cannon, Overkill, 1 heat (self), R8, 1d6+2 kinetic. Can spin up barrels as a quick action for Reliable 3, but becomes Slowed while spinning; ends as a protocol.
-- **Main:** unequipped — reserve slot for future loot
+- **Main:** Kinetic Cannon — Main Cannon, KNOCKBACK 1, R8, 1d6+2 kinetic — salvaged from the Corvo Raider hideout, held in crew stores until now.
 - **Heavy:** Halvorsen Point-Defense Battery — Heavy Cannon, ARCING, KNOCKBACK 2, R10, 2d6 kinetic — reward from Halvorsen Freight Concern for the Tallow Point job; surplus hardware from their contracted escort fleet, built to knock boarders off cargo hulls.
 
 ## Systems (2/5 SP)
