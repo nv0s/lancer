@@ -1,0 +1,1186 @@
+<title>Battle Map — The Undercroft Complex (Demo)</title>
+<style>
+  :root {
+    --surface-0: #06080c;
+    --surface-1: #0a0e14;
+    --surface-2: #121924;
+    --surface-3: #1c2531;
+    --line: #232e3a;
+    --line-strong: #35424f;
+    --ink-1: #f2f5f8;
+    --ink-2: #9fb0c0;
+    --ink-3: #5c6b7a;
+    --accent: #5fd4dc;
+    --accent-dim: #2c5a5e;
+    --iff-friendly: #3987e5;
+    --iff-neutral: #199e70;
+    --iff-hostile: #e66767;
+    --status-good: #0ca30c;
+    --status-warn: #fab219;
+    --status-crit: #d03b3b;
+    --elev-1: #184f95;
+    --elev-2: #1c5cab;
+    --elev-3: #256abf;
+    --elev-4: #2a78d6;
+    --wall: #2a3542;
+    --wall-line: #3c4a59;
+    --difficult: #362f22;
+    --difficult-dot: #8a7a55;
+    --mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, "Roboto Mono", monospace;
+    --sans: -apple-system, "Segoe UI", Roboto, sans-serif;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    background: var(--surface-0);
+    color: var(--ink-1);
+    font-family: var(--sans);
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  button {
+    font-family: var(--mono);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ---- sidebar header: encounter name + round ---- */
+  .sidebar-header {
+    flex-shrink: 0;
+    padding: 16px;
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .sidebar-header__name {
+    font-family: var(--mono);
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 4px;
+    text-wrap: balance;
+  }
+
+  .sidebar-header__sub {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--ink-3);
+    margin: 0 0 10px;
+  }
+
+  .sidebar-header__round {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-2);
+    margin: 0;
+  }
+
+  .sidebar-header__round b { color: var(--ink-1); font-weight: 600; }
+
+  .iff-dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* ---- stage layout ---- */
+  .stage {
+    flex: 1;
+    display: flex;
+    gap: 0;
+    min-height: 0;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .map-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+    cursor: grab;
+    user-select: none;
+    background:
+      radial-gradient(ellipse at 50% 0%, #0d1420 0%, var(--surface-1) 60%);
+  }
+
+  .map-wrap.dragging {
+    cursor: grabbing;
+  }
+
+  svg#map {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+  }
+
+  /* ---- splitter (drag to resize the sidebar) ---- */
+  .splitter {
+    width: 6px;
+    flex-shrink: 0;
+    background: var(--line);
+    cursor: col-resize;
+    position: relative;
+  }
+
+  .splitter::before {
+    content: "";
+    position: absolute;
+    inset: 0 -3px;
+  }
+
+  .splitter:hover, .splitter.dragging {
+    background: var(--accent);
+  }
+
+  body.resizing {
+    cursor: col-resize;
+    user-select: none;
+  }
+
+  /* ---- sidebar: scrollable info panels + a static, collapsible key ---- */
+  .sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    background: var(--surface-2);
+    border-left: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  body.resizing-v {
+    cursor: row-resize;
+    user-select: none;
+  }
+
+  .legend-wrap {
+    flex-shrink: 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .legend-header {
+    width: 100%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: var(--surface-3);
+    border: none;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    cursor: row-resize;
+  }
+
+  .legend-header:hover { background: var(--surface-2); }
+
+  .legend-arrow {
+    line-height: 1;
+    font-size: 10px;
+  }
+
+  .legend-wrap .legend {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .legend.collapsed {
+    display: none;
+  }
+
+  .panel {
+    padding: 16px;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--line);
+    flex-shrink: 0;
+  }
+
+  .panel:last-child { border-bottom: none; }
+
+  /* ---- cursor-following tooltip (hover detail) ---- */
+  .cursor-tooltip {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    display: none;
+    width: 260px;
+    max-height: 70vh;
+    overflow: hidden;
+    background: rgba(10, 14, 20, 0.97);
+    border: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    border-radius: 4px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    pointer-events: none;
+  }
+
+  /* ---- pinned comparison cards ---- */
+  .pin-card {
+    position: relative;
+    padding: 16px 40px 16px 16px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+
+  .pin-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface-3);
+    color: var(--ink-2);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pin-close:hover {
+    border-color: var(--iff-hostile);
+    color: var(--iff-hostile);
+  }
+
+  .readout__eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 6px;
+  }
+
+  .readout__name {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--ink-1);
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+
+  .cell-coord {
+    position: absolute;
+    top: 12px;
+    right: 40px;
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .readout__empty {
+    color: var(--ink-3);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .hp-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hp-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--surface-3);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+  }
+
+  .hp-bar__fill { height: 100%; border-radius: 4px 0 0 4px; }
+
+  .panel dl, .pin-card dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 10px;
+    margin: 0 0 14px;
+    font-size: 12px;
+  }
+
+  .panel dt, .pin-card dt {
+    color: var(--ink-3);
+    font-family: var(--mono);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    padding-top: 2px;
+  }
+
+  .panel dd, .pin-card dd { margin: 0; color: var(--ink-1); }
+
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    background: var(--surface-3);
+    border: 1px solid var(--line-strong);
+    color: var(--ink-2);
+  }
+
+  .pill--iff-friendly { border-color: var(--iff-friendly); color: var(--iff-friendly); }
+  .pill--iff-neutral { border-color: var(--iff-neutral); color: var(--iff-neutral); }
+  .pill--iff-hostile { border-color: var(--iff-hostile); color: var(--iff-hostile); }
+
+  /* ---- svg elements ---- */
+  .tile-open { fill: var(--surface-1); }
+  .tile-pit { fill: var(--surface-0); }
+  .tile-wall { fill: var(--wall); }
+  .tile-difficult { fill: var(--difficult); }
+
+  .grid-line { stroke: var(--line); stroke-width: 1; }
+  .coord-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    fill: var(--ink-3);
+    text-anchor: middle;
+  }
+
+  .tile-hit { fill: transparent; cursor: pointer; }
+  .tile-hit--plain { cursor: default; }
+  .tile-hit:hover ~ .tile-hover-ring,
+  .tile-group:hover .tile-hover-ring { opacity: 1; }
+  .tile-hover-ring {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s ease;
+  }
+  .tile-group.selected .tile-hover-ring {
+    opacity: 1;
+    stroke: var(--ink-1);
+    stroke-width: 2.5;
+  }
+
+  .hazard-hatch { stroke: var(--status-warn); stroke-width: 2; opacity: 0.55; }
+  .difficult-dot { fill: var(--difficult-dot); opacity: 0.8; }
+  .wall-hatch { stroke: var(--wall-line); stroke-width: 2; }
+  .pit-hatch { stroke: #1a2129; stroke-width: 2; }
+
+  .cover-hard { stroke: var(--ink-1); stroke-width: 4; stroke-linecap: round; }
+  .cover-soft { stroke: var(--ink-2); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 3 4; }
+
+  .glyph {
+    font-family: var(--mono);
+    font-size: 13px;
+    fill: var(--ink-2);
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+  }
+
+  .token { cursor: pointer; }
+  .token-ring { fill: var(--surface-1); fill-opacity: 0.85; stroke-width: 2.5; }
+  .token-ring--friendly { stroke: var(--iff-friendly); }
+  .token-ring--neutral { stroke: var(--iff-neutral); }
+  .token-ring--hostile { stroke: var(--iff-hostile); }
+
+  .token:hover .token-ring, .token:focus-visible .token-ring {
+    fill: var(--surface-3);
+  }
+
+  .token-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+  }
+
+  .token-label--friendly { fill: var(--iff-friendly); }
+  .token-label--neutral { fill: var(--iff-neutral); }
+  .token-label--hostile { fill: var(--iff-hostile); }
+
+  .elev-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    fill: var(--ink-2);
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+  }
+
+  .elev-badge-bg {
+    fill: var(--surface-2);
+    stroke: var(--line-strong);
+    stroke-width: 1;
+  }
+
+  .selected .token-ring {
+    filter: drop-shadow(0 0 4px currentColor);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .selected .token-ring { animation: pulse 1.6s ease-in-out infinite; }
+  }
+  @keyframes pulse {
+    0%, 100% { stroke-opacity: 1; }
+    50% { stroke-opacity: 0.55; }
+  }
+
+  /* ---- legend panel content ---- */
+  .legend h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 12px 0 6px;
+  }
+
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+
+  .iff-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-bottom: 4px;
+  }
+
+  .iff-row .legend-row {
+    margin-bottom: 0;
+  }
+
+  .legend-swatch {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    border: 1px solid var(--line-strong);
+  }
+
+  .elev-strip {
+    display: flex;
+    gap: 2px;
+    margin-top: 5px;
+  }
+
+  .elev-strip div {
+    flex: 1;
+    height: 12px;
+    border-radius: 2px;
+  }
+
+  .elev-strip-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    margin-top: 3px;
+  }
+
+  @media (max-width: 760px) {
+    .stage { flex-direction: column; overflow: auto; }
+    .sidebar { width: auto !important; border-left: none; border-top: 1px solid var(--line); }
+    .map-wrap { padding: 12px; }
+    .splitter { display: none; }
+  }
+</style>
+
+<div class="cursor-tooltip panel" id="cursorTooltip"></div>
+
+<div class="stage">
+  <div class="map-wrap" id="mapWrap">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+  <div class="splitter" id="splitter"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <p class="sidebar-header__name" id="encounterTitle"></p>
+      <p class="sidebar-header__sub" id="encounterSub"></p>
+      <p class="sidebar-header__round">ROUND <b id="roundNum">1</b></p>
+    </div>
+    <div class="sidebar-scroll">
+      <div id="pinnedList">
+        <p class="readout__eyebrow" style="padding:16px 16px 0;text-align:center">Pinned</p>
+        <p class="readout__empty" style="padding:6px 16px 16px;text-align:center">Click a tile or unit to pin it here.</p>
+      </div>
+    </div>
+    <div class="legend-wrap" id="legendWrap">
+      <button class="legend-header" id="legendToggle" aria-expanded="true" aria-controls="legend">
+        <span class="legend-arrow">◆</span>
+        <span>Sensor Key</span>
+        <span class="legend-arrow">◆</span>
+      </button>
+      <div class="panel legend" id="legend">
+        <div class="iff-row">
+          <span class="legend-row"><span class="iff-dot" style="background:var(--iff-friendly)"></span>Friendly</span>
+          <span class="legend-row"><span class="iff-dot" style="background:var(--iff-neutral)"></span>Neutral</span>
+          <span class="legend-row"><span class="iff-dot" style="background:var(--iff-hostile)"></span>Hostile</span>
+        </div>
+        <h4>Elevation</h4>
+        <div class="elev-strip" id="elevStrip"></div>
+        <div class="elev-strip-labels"><span>Ground</span><span>High</span></div>
+        <h4>Terrain</h4>
+        <div class="legend-row"><span class="legend-swatch" style="background:var(--wall)"></span>Obstacle (blocks move + LOS)</div>
+        <div class="legend-row"><span class="legend-swatch" style="background:var(--difficult)"></span>Difficult terrain</div>
+        <div class="legend-row"><span class="legend-swatch" style="background:var(--surface-0)"></span>Pit / drop</div>
+        <div class="legend-row"><span class="legend-swatch" style="background:var(--surface-1);background-image:repeating-linear-gradient(45deg, var(--status-warn) 0 2px, transparent 2px 6px)"></span>Hazard zone</div>
+        <h4>Cover</h4>
+        <div class="legend-row"><span style="width:28px;height:0;border-top:4px solid var(--ink-1);display:inline-block"></span>Hard cover edge</div>
+        <div class="legend-row"><span style="width:28px;height:0;border-top:4px dashed var(--ink-2);display:inline-block"></span>Soft cover edge</div>
+        <h4>HP</h4>
+        <div class="legend-row"><span class="legend-swatch" style="background:var(--status-good)"></span>&gt;50%</div>
+        <div class="legend-row"><span class="legend-swatch" style="background:var(--status-warn)"></span>25–50%</div>
+        <div class="legend-row"><span class="legend-swatch" style="background:var(--status-crit)"></span>&lt;25%</div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---- demo encounter data ------------------------------------------
+  // This is placeholder/demo content to exercise the renderer, not a
+  // committed campaign scene. Swap MAP for a real encounter's data to
+  // reuse this file for an actual fight.
+  const MAP = {
+    meta: { name: "The Undercroft Complex", sub: "DEMO DATA — not a canon scene", round: 1 },
+    // cols/rows aren't set here -- they're derived below from the actual
+    // tile/token content, so the grid always tightly fits whatever map is
+    // authored instead of being an arbitrary number decoupled from it. A
+    // bigger map just means more rooms/hallways; the grid grows to match.
+    grid: { cellPx: 57 },
+    // Tile lookup returns the FIRST matching entry per cell, so ordering
+    // matters: specific terrain first, then generic room/hallway floor
+    // fill, then a single catch-all void rect last that swallows anything
+    // not already claimed -- that's what carves the dungeon shape instead
+    // of a plain rectangle.
+    tiles: [
+      // --- specific terrain -------------------------------------------
+      // watchtower platform in the North Outpost
+      { x: 46, y: 6, w: 4, h: 1, elevation: 2 },
+      // rubble in West Barracks
+      { x: 5, y: 42, w: 1, h: 1, terrain: "difficult" },
+      { x: 6, y: 43, w: 2, h: 1, terrain: "difficult" },
+      // pit in the NW dead-end vault
+      { x: 4, y: 10, w: 1, h: 1, terrain: "pit", note: "5-space drop to a flooded sub-level" },
+      // exposed wiring hazard in East Comms
+      { x: 85, y: 42, w: 1, h: 1, terrain: "hazard", note: "Live wiring — SYSTEMS save or 2 heat on entry" },
+      { x: 86, y: 43, w: 1, h: 1, terrain: "hazard", note: "Live wiring — SYSTEMS save or 2 heat on entry" },
+      // reactor core leak, two patches
+      { x: 42, y: 82, w: 2, h: 1, terrain: "hazard", note: "Reactor bleed — AGILITY save or 2 burn on entry" },
+      { x: 44, y: 84, w: 1, h: 1, terrain: "hazard", note: "Reactor bleed — AGILITY save or 2 burn on entry" },
+      // rubble + pit in the SE dead-end storage
+      { x: 83, y: 82, w: 1, h: 1, terrain: "difficult" },
+      { x: 85, y: 84, w: 1, h: 1, terrain: "pit", note: "4-space drop into a collapsed sub-vault" },
+      // elevated catwalk overlooking the Boss Arena
+      { x: 68, y: 62, w: 8, h: 1, elevation: 2 },
+      // pillar + cover guarding the arena floor
+      { x: 70, y: 65, w: 1, h: 1, terrain: "wall", cover: { edge: "e", type: "hard" } },
+      // scattered arena debris, irregular footprint
+      { x: 75, y: 70, w: 1, h: 1, terrain: "difficult" },
+      { x: 76, y: 71, w: 1, h: 1, terrain: "difficult" },
+      { x: 78, y: 68, w: 1, h: 1, terrain: "difficult" },
+
+      // --- rooms (generic floor fill) ----------------------------------
+      { x: 40, y: 42, w: 16, h: 14 }, // Room 1: Center Hub
+      { x: 44, y: 5, w: 10, h: 14 },  // Room 2: North Outpost
+      { x: 1, y: 38, w: 14, h: 16 },  // Room 3: West Barracks
+      { x: 80, y: 38, w: 14, h: 16 }, // Room 4: East Comms
+      { x: 38, y: 78, w: 18, h: 16 }, // Room 5: South Reactor
+      { x: 1, y: 5, w: 10, h: 12 },   // Room 6: NW dead-end vault
+      { x: 80, y: 78, w: 12, h: 14 }, // Room 7: SE dead-end storage
+      { x: 65, y: 60, w: 20, h: 16 }, // Room 8: Boss Arena
+
+      // --- hallways (generic floor fill) --------------------------------
+      // Lancer fields multiple frame sizes at once, and this fight has
+      // both ends of the range in play: Size 2 (Bull, Doc) and a
+      // stationary Size 3 (the HA Siege Frame). Every corridor's
+      // *thickness* -- not just its length -- clears Size 2, since that's
+      // the largest frame that actually needs to move through one; the
+      // Siege Frame never leaves the Boss Arena, so only that room needs
+      // to be big enough to hold its 3x3 footprint, not the halls leading
+      // to it.
+      { x: 47, y: 19, w: 2, h: 23 },  // C1: North Outpost <-> Center Hub
+      { x: 15, y: 46, w: 25, h: 2 },  // C2: West Barracks <-> Center Hub (long spine)
+      { x: 3, y: 17, w: 2, h: 21 },   // C3: NW vault <-> West Barracks (dead end)
+      { x: 56, y: 46, w: 24, h: 2 },  // C4: Center Hub <-> East Comms (long spine)
+      { x: 82, y: 54, w: 2, h: 6 },   // C5: East Comms <-> Boss Arena
+      { x: 46, y: 56, w: 2, h: 22 },  // C6: Center Hub <-> South Reactor
+      { x: 56, y: 83, w: 24, h: 2 },  // C7: South Reactor <-> SE storage (dead end)
+
+      // --- catch-all: everything else is outside the dungeon ----------
+      // w/h deliberately oversized (not tied to grid.cols/rows) so this
+      // still covers the whole grid correctly regardless of map size
+      { x: 0, y: 0, w: 9999, h: 9999, terrain: "void" }
+    ],
+    tokens: [
+      { id: "lee", name: "Lee / Ungoliant", faction: "friendly", x: 46, y: 6, elevation: 2, size: 1, hp: 8, maxHp: 11, statuses: ["HIDDEN"], notes: "Death's Head, watching the approach from the North Outpost's watchtower.", stats: { evasion: 13, eDefense: 9, armor: 0, speed: 6, heatCap: 6 }, loadout: ["SSC Rail Gun (Heavy)", "Vulture DMR (Main/Aux)"] },
+      { id: "bull", name: "Bull / Drake", faction: "friendly", x: 47, y: 30, elevation: 0, size: 2, hp: 15, maxHp: 15, statuses: [], notes: "Holding the north corridor down into the Center Hub.", stats: { evasion: 6, eDefense: 7, armor: 3, speed: 3, heatCap: 5 }, loadout: ["Assault Cannon (Main)", "Kinetic Cannon (Main)", "Halvorsen Point-Defense Battery (Heavy)"] },
+      { id: "doc", name: "Doc / (Lancaster)", faction: "friendly", x: 44, y: 46, elevation: 0, size: 2, hp: 5, maxHp: 7, statuses: [], notes: "Lancaster staged in the Center Hub, Latch Drone ready.", stats: { evasion: 9, eDefense: 11, armor: 1, speed: 6, heatCap: 6 }, loadout: ["Precision Rifle (Main/Aux)"] },
+      { id: "riot", name: "Riot / (Nelson)", faction: "friendly", x: 60, y: 46, elevation: 0, size: 1, hp: 11, maxHp: 11, statuses: [], notes: "Nelson working the long corridor east toward Comms.", stats: { evasion: 14, eDefense: 7, armor: 0, speed: 6, heatCap: 6 }, loadout: ["War Pike (Main/Aux)"] },
+      { id: "siege", name: "HA Siege Frame", faction: "hostile", x: 78, y: 70, elevation: 0, size: 3, hp: 22, maxHp: 22, statuses: [], notes: "Loosely based on the HA Barbarossa (Artillery). ORDNANCE weapon goes quiet if closed to melee range, and can't fire after moving.", stats: { evasion: 6, eDefense: 6, armor: 2, speed: 2 }, loadout: ["Siege Cannon (Heavy Cannon, ORDNANCE, R15, 3d6+2)"], spotted: true },
+      { id: "handler1", name: "Ossuary Handler A", faction: "hostile", x: 70, y: 72, elevation: 0, size: 1, hp: 8, maxHp: 8, statuses: [], stats: { evasion: 9, eDefense: 9, armor: 1, speed: 5 } },
+      { id: "handler2", name: "Ossuary Handler B", faction: "hostile", x: 82, y: 63, elevation: 0, size: 1, hp: 8, maxHp: 8, statuses: [], stats: { evasion: 9, eDefense: 9, armor: 1, speed: 5 } }
+    ]
+  };
+
+  // Couple the grid to the map's actual content instead of a hardcoded
+  // size: scan every real tile/token (the oversized void catch-all
+  // doesn't count -- it isn't content, it's the "everything else" fill),
+  // find their bounding box, then size the grid to that box plus a small
+  // margin. The map was authored near the origin for readability; this
+  // also rebases everything so it starts right at the margin rather than
+  // wherever it happened to be typed, so there's no dead space to pan
+  // through before reaching the first room.
+  const GRID_MARGIN = 2;
+  (function fitGridToContent() {
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    const stretch = (x, y, w, h) => {
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x + w - 1);
+      maxY = Math.max(maxY, y + h - 1);
+    };
+    for (const t of MAP.tiles) {
+      if (t.terrain === "void") continue;
+      stretch(t.x, t.y, t.w || 1, t.h || 1);
+    }
+    for (const tok of MAP.tokens) {
+      const footprint = tok.size < 1 ? 1 : Math.ceil(tok.size);
+      stretch(tok.x, tok.y, footprint, footprint);
+    }
+
+    const dx = GRID_MARGIN - minX, dy = GRID_MARGIN - minY;
+    MAP.tiles.forEach((t) => {
+      if (t.terrain === "void") return;
+      t.x += dx;
+      t.y += dy;
+    });
+    MAP.tokens.forEach((t) => {
+      t.x += dx;
+      t.y += dy;
+    });
+
+    MAP.grid.cols = (maxX - minX + 1) + GRID_MARGIN * 2;
+    MAP.grid.rows = (maxY - minY + 1) + GRID_MARGIN * 2;
+  })();
+
+  const ELEV_COLORS = { 1: "var(--elev-1)", 2: "var(--elev-2)", 3: "var(--elev-3)", 4: "var(--elev-4)" };
+  const IFF_ORDER = { friendly: 0, neutral: 1, hostile: 2 };
+  const SVGNS = "http://www.w3.org/2000/svg";
+
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS(SVGNS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+
+  // Spreadsheet-style column labels: A..Z, then AA, AB, ... for grids
+  // wider than 26 columns.
+  function colLabel(x) {
+    let n = x + 1, label = "";
+    while (n > 0) {
+      const rem = (n - 1) % 26;
+      label = String.fromCharCode(65 + rem) + label;
+      n = Math.floor((n - 1) / 26);
+    }
+    return label;
+  }
+
+  function tileAt(x, y) {
+    for (const t of MAP.tiles) {
+      const w = t.w || 1, h = t.h || 1;
+      if (x >= t.x && x < t.x + w && y >= t.y && y < t.y + h) return t;
+    }
+    return null;
+  }
+
+  function hpBand(hp, maxHp) {
+    const pct = hp / maxHp;
+    if (pct <= 0.25) return "crit";
+    if (pct <= 0.5) return "warn";
+    return "good";
+  }
+  const HP_COLOR = { good: "var(--status-good)", warn: "var(--status-warn)", crit: "var(--status-crit)" };
+
+  // ---- cursor-following tooltip (hover) --------------------------------
+  const tooltip = document.getElementById("cursorTooltip");
+
+  function positionTooltip(clientX, clientY) {
+    const pad = 18;
+    let x = clientX + pad, y = clientY + pad;
+    const tw = tooltip.offsetWidth, th = tooltip.offsetHeight;
+    if (x + tw > window.innerWidth) x = clientX - tw - pad;
+    if (y + th > window.innerHeight) y = window.innerHeight - th - 8;
+    tooltip.style.left = Math.max(8, x) + "px";
+    tooltip.style.top = Math.max(8, y) + "px";
+  }
+
+  function showTooltip(html, clientX, clientY) {
+    tooltip.innerHTML = html;
+    tooltip.style.display = "block";
+    positionTooltip(clientX, clientY);
+  }
+
+  function hideTooltip() {
+    tooltip.style.display = "none";
+  }
+
+  // ---- pinned comparison list (click to pin/unpin) ---------------------
+  const pinned = new Map(); // key -> { node, html }
+  const PIN_EMPTY = '<p class="readout__eyebrow" style="padding:16px 16px 0;text-align:center">Pinned</p><p class="readout__empty" style="padding:6px 16px 16px;text-align:center">Click a tile or unit to pin it here.</p>';
+
+  function renderPinnedList() {
+    const container = document.getElementById("pinnedList");
+    if (pinned.size === 0) {
+      container.innerHTML = PIN_EMPTY;
+      return;
+    }
+    let html = "";
+    for (const key of pinned.keys()) {
+      html += '<div class="pin-card"><button class="pin-close" type="button" data-key="' + key + '" aria-label="Unpin">×</button>' + pinned.get(key).html + "</div>";
+    }
+    container.innerHTML = html;
+    container.querySelectorAll(".pin-close").forEach((btn) => {
+      btn.addEventListener("click", () => unpin(btn.getAttribute("data-key")));
+    });
+  }
+
+  function unpin(key) {
+    const entry = pinned.get(key);
+    if (!entry) return;
+    entry.node.classList.remove("selected");
+    pinned.delete(key);
+    renderPinnedList();
+  }
+
+  function togglePin(key, node, html) {
+    if (pinned.has(key)) {
+      unpin(key);
+      return;
+    }
+    node.classList.add("selected");
+    pinned.set(key, { node, html });
+    renderPinnedList();
+  }
+
+  function tileHTML(t, x, y) {
+    const parts = [];
+    parts.push('<span class="cell-coord">' + colLabel(x) + (y + 1) + "</span>");
+    parts.push('<p class="readout__name">' + (t && t.terrain ? t.terrain.toUpperCase() : "OPEN GROUND") + '</p>');
+    parts.push("<dl>");
+    parts.push("<dt>Elevation</dt><dd>" + ((t && t.elevation) || 0) + "</dd>");
+    if (t && t.cover) parts.push("<dt>Cover</dt><dd>" + t.cover.type + " (" + t.cover.edge.toUpperCase() + " edge)</dd>");
+    parts.push("</dl>");
+    if (t && t.note) parts.push('<p style="color:var(--ink-2);font-size:12px;line-height:1.5">' + t.note + "</p>");
+    return parts.join("");
+  }
+
+  const CONDITION_LABEL = { good: "NOMINAL", warn: "DAMAGED", crit: "CRITICAL" };
+
+  function fullIntel(tok) {
+    return tok.faction !== "hostile" || tok.spotted === true;
+  }
+
+  function tokenHTML(tok) {
+    const full = fullIntel(tok);
+    const band = hpBand(tok.hp, tok.maxHp);
+    const parts = [];
+
+    let eyebrow = "Unit — " + tok.faction.toUpperCase();
+    if (tok.faction === "hostile") eyebrow += full ? " · LOCKED" : " · SENSOR CONTACT";
+    parts.push('<p class="readout__eyebrow">' + eyebrow + '</p>');
+    parts.push('<p class="readout__name">' + tok.name + "</p>");
+
+    if (full) {
+      const pct = Math.max(0, Math.min(100, (tok.hp / tok.maxHp) * 100));
+      parts.push('<div class="hp-row"><span>' + tok.hp + "/" + tok.maxHp + '</span><span class="hp-bar"><span class="hp-bar__fill" style="width:' + pct + "%;background:" + HP_COLOR[band] + '"></span></span></div>');
+    } else {
+      parts.push('<div class="hp-row"><span class="pill" style="border-color:' + HP_COLOR[band] + ";color:" + HP_COLOR[band] + '">' + CONDITION_LABEL[band] + "</span></div>");
+    }
+
+    parts.push("<dl>");
+    parts.push("<dt>Position</dt><dd>" + colLabel(tok.x) + (tok.y + 1) + "</dd>");
+    parts.push("<dt>Elevation</dt><dd>" + tok.elevation + "</dd>");
+    parts.push("<dt>Size</dt><dd>" + tok.size + "</dd>");
+    if (full && tok.stats) {
+      parts.push("<dt>Evasion</dt><dd>" + tok.stats.evasion + "</dd>");
+      parts.push("<dt>E-Defense</dt><dd>" + tok.stats.eDefense + "</dd>");
+      parts.push("<dt>Armor</dt><dd>" + tok.stats.armor + "</dd>");
+      parts.push("<dt>Speed</dt><dd>" + tok.stats.speed + "</dd>");
+      if (tok.stats.heatCap != null) parts.push("<dt>Heat Cap</dt><dd>" + tok.stats.heatCap + "</dd>");
+    }
+    parts.push("</dl>");
+
+    if (tok.statuses.length) {
+      parts.push('<div class="pill-row">');
+      for (const s of tok.statuses) parts.push('<span class="pill">' + s + "</span>");
+      parts.push("</div>");
+    }
+
+    if (full && tok.loadout && tok.loadout.length) {
+      parts.push('<p class="readout__eyebrow" style="margin-top:14px">Loadout</p>');
+      parts.push('<p style="color:var(--ink-1);font-size:12px;line-height:1.6;margin:0">' + tok.loadout.join("<br>") + "</p>");
+    }
+    if (full && tok.notes) {
+      parts.push('<p style="color:var(--ink-2);font-size:12px;line-height:1.5;margin-top:12px">' + tok.notes + "</p>");
+    } else if (!full) {
+      parts.push('<p style="color:var(--ink-3);font-size:11px;line-height:1.5;margin-top:12px;font-style:italic">No weapon or stat data — Lock On to reveal full readout.</p>');
+    }
+    return parts.join("");
+  }
+
+  let baseW = 0, baseH = 0;
+
+  function render() {
+    const { cols, rows, cellPx } = MAP.grid;
+    const pad = 30;
+    const w = cols * cellPx, h = rows * cellPx;
+    baseW = w + pad * 2;
+    baseH = h + pad * 2;
+    const svg = document.getElementById("map");
+    svg.setAttribute("viewBox", "0 0 " + baseW + " " + baseH);
+    svg.style.width = baseW + "px";
+    svg.style.height = baseH + "px";
+
+    const root = el("g", { transform: "translate(" + pad + "," + pad + ")" }, svg);
+    const defs = el("defs", {}, svg);
+
+    // column / row coordinate labels on all four edges
+    for (let x = 0; x < cols; x++) {
+      const label = colLabel(x);
+      el("text", { class: "coord-label", x: x * cellPx + cellPx / 2, y: -10 }, root).textContent = label;
+      el("text", { class: "coord-label", x: x * cellPx + cellPx / 2, y: h + 20 }, root).textContent = label;
+    }
+    for (let y = 0; y < rows; y++) {
+      el("text", { class: "coord-label", x: -14, y: y * cellPx + cellPx / 2 + 4 }, root).textContent = y + 1;
+      el("text", { class: "coord-label", x: w + 14, y: y * cellPx + cellPx / 2 + 4 }, root).textContent = y + 1;
+    }
+
+    // base tiles
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const t = tileAt(x, y);
+        if (t && t.terrain === "void") continue; // outside the map footprint entirely -- no fill, no border, no interaction
+        const g = el("g", { class: "tile-group" }, root);
+        const cls = t && t.terrain === "wall" ? "tile-wall" : t && t.terrain === "pit" ? "tile-pit" : t && t.terrain === "difficult" ? "tile-difficult" : "tile-open";
+        const rect = el("rect", { class: cls, x: x * cellPx, y: y * cellPx, width: cellPx, height: cellPx }, g);
+        if (t && t.elevation && !t.terrain) {
+          rect.setAttribute("fill", ELEV_COLORS[Math.min(4, t.elevation)] || ELEV_COLORS[4]);
+        }
+        if (t && t.terrain === "difficult") {
+          for (let i = 0; i < 3; i++) {
+            el("circle", { class: "difficult-dot", cx: x * cellPx + 12 + i * 15, cy: y * cellPx + cellPx - 12, r: 2 }, g);
+          }
+        }
+        if (t && t.terrain === "hazard") {
+          const clipId = "hazclip-" + x + "-" + y;
+          const clip = el("clipPath", { id: clipId }, defs);
+          el("rect", { x: x * cellPx, y: y * cellPx, width: cellPx, height: cellPx }, clip);
+          const hatchGroup = el("g", { "clip-path": "url(#" + clipId + ")" }, g);
+          for (let i = -1; i < 3; i++) {
+            el("line", { class: "hazard-hatch", x1: x * cellPx + i * 14, y1: y * cellPx + cellPx, x2: x * cellPx + i * 14 + cellPx, y2: y * cellPx }, hatchGroup);
+          }
+        }
+        if (t && t.terrain === "wall") {
+          el("line", { class: "wall-hatch", x1: x * cellPx + 6, y1: y * cellPx + 6, x2: x * cellPx + cellPx - 6, y2: y * cellPx + cellPx - 6 }, g);
+          el("line", { class: "wall-hatch", x1: x * cellPx + cellPx - 6, y1: y * cellPx + 6, x2: x * cellPx + 6, y2: y * cellPx + cellPx - 6 }, g);
+        }
+        if (t && t.terrain === "pit") {
+          el("line", { class: "pit-hatch", x1: x * cellPx + 8, y1: y * cellPx + 8, x2: x * cellPx + cellPx - 8, y2: y * cellPx + cellPx - 8 }, g);
+        }
+        el("rect", { class: "grid-line", x: x * cellPx, y: y * cellPx, width: cellPx, height: cellPx, fill: "none" }, g);
+
+        if (t && t.elevation && !t.terrain && x === t.x && y === t.y) {
+          el("text", { class: "elev-badge", x: x * cellPx + 10, y: y * cellPx + 10 }, g).textContent = "+" + t.elevation;
+        }
+
+        const hover = el("rect", { class: "tile-hover-ring", x: x * cellPx + 1, y: y * cellPx + 1, width: cellPx - 2, height: cellPx - 2 }, g);
+        const hit = el("rect", { class: t ? "tile-hit" : "tile-hit tile-hit--plain", x: x * cellPx, y: y * cellPx, width: cellPx, height: cellPx }, g);
+        hit.addEventListener("mouseenter", (e) => showTooltip(tileHTML(t, x, y), e.clientX, e.clientY));
+        hit.addEventListener("mousemove", (e) => { if (tooltip.style.display === "block") positionTooltip(e.clientX, e.clientY); });
+        hit.addEventListener("mouseleave", hideTooltip);
+        if (t) {
+          hit.addEventListener("click", () => togglePin("tile:" + x + "," + y, g, tileHTML(t, x, y)));
+        }
+
+        if (t && t.cover && t.x === x && t.y === y) {
+          const edges = {
+            n: [x * cellPx, y * cellPx, x * cellPx + cellPx, y * cellPx],
+            s: [x * cellPx, y * cellPx + cellPx, x * cellPx + cellPx, y * cellPx + cellPx],
+            e: [x * cellPx + cellPx, y * cellPx, x * cellPx + cellPx, y * cellPx + cellPx],
+            w: [x * cellPx, y * cellPx, x * cellPx, y * cellPx + cellPx]
+          };
+          const [x1, y1, x2, y2] = edges[t.cover.edge];
+          el("line", { class: t.cover.type === "hard" ? "cover-hard" : "cover-soft", x1, y1, x2, y2 }, g);
+        }
+      }
+    }
+
+    // tokens, hostile drawn last isn't necessary but keep faction grouping stable
+    const tokens = MAP.tokens.slice().sort((a, b) => IFF_ORDER[a.faction] - IFF_ORDER[b.faction]);
+    for (const tok of tokens) {
+      const footprint = tok.size < 1 ? 1 : Math.ceil(tok.size);
+      const scale = tok.size < 1 ? 0.5 : 1;
+      const cx = tok.x * cellPx + (footprint * cellPx) / 2;
+      const cy = tok.y * cellPx + (footprint * cellPx) / 2;
+      const r = (footprint * cellPx * 0.38) * scale;
+
+      const g = el("g", { class: "token", tabindex: "0", role: "button", "aria-label": tok.name }, root);
+      el("circle", { class: "token-ring token-ring--" + tok.faction, cx, cy, r }, g);
+      const nameWords = tok.name.replace(/[^A-Za-z\s\/]/g, "").split(/[\s\/]+/).filter(Boolean);
+      const initials = nameWords.map(w => w[0]).slice(0, 2).join("").toUpperCase();
+      el("text", { class: "token-label token-label--" + tok.faction, x: cx, y: cy }, g).textContent = initials;
+
+      // elevation badge
+      const bx = cx + r * 0.72, by = cy - r * 0.72;
+      el("circle", { class: "elev-badge-bg", cx: bx, cy: by, r: 8 }, g);
+      el("text", { class: "elev-badge", x: bx, y: by + 1 }, g).textContent = tok.elevation;
+
+      g.addEventListener("mouseenter", (e) => showTooltip(tokenHTML(tok), e.clientX, e.clientY));
+      g.addEventListener("mousemove", (e) => { if (tooltip.style.display === "block") positionTooltip(e.clientX, e.clientY); });
+      g.addEventListener("mouseleave", hideTooltip);
+      g.addEventListener("focus", () => {
+        const r = g.getBoundingClientRect();
+        showTooltip(tokenHTML(tok), r.left + r.width / 2, r.top);
+      });
+      g.addEventListener("blur", hideTooltip);
+      g.addEventListener("click", (e) => {
+        e.stopPropagation();
+        togglePin("token:" + tok.id, g, tokenHTML(tok));
+      });
+    }
+  }
+
+  // elevation legend strip
+  const strip = document.getElementById("elevStrip");
+  [0, 1, 2, 3, 4].forEach(e => {
+    const d = document.createElement("div");
+    d.style.background = e === 0 ? "var(--surface-1)" : ELEV_COLORS[e];
+    strip.appendChild(d);
+  });
+
+  document.getElementById("encounterTitle").textContent = MAP.meta.name;
+  document.getElementById("encounterSub").textContent = MAP.meta.sub;
+  document.getElementById("roundNum").textContent = MAP.meta.round;
+
+  // ---- click-and-drag panning (map keeps its own scroll region) -----
+  // Panning/zoom is handled entirely by hand (translate+scale transform on
+  // the SVG) rather than native scrollLeft/scrollTop. Native scroll only
+  // has range when content overflows the container, which breaks dragging
+  // the instant the map is zoomed smaller than the viewport (or dragged
+  // toward an edge) -- a manual transform has no such restriction, so you
+  // can pan freely at any zoom level, in any direction, past the map edges.
+  const mapWrap = document.getElementById("mapWrap");
+  const mapSvg = document.getElementById("map");
+  const ZOOM_MIN = 0.3, ZOOM_MAX = 3;
+  let panX = 0, panY = 0, zoom = 1;
+  let isDragging = false, dragMoved = false, startX = 0, startY = 0, startPanX = 0, startPanY = 0;
+
+  function applyTransform() {
+    mapSvg.style.transform = "translate(" + panX + "px," + panY + "px) scale(" + zoom + ")";
+  }
+
+  function centerMap() {
+    const rect = mapWrap.getBoundingClientRect();
+    panX = (rect.width - baseW * zoom) / 2;
+    panY = (rect.height - baseH * zoom) / 2;
+    applyTransform();
+  }
+
+  mapWrap.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    dragMoved = false;
+    startX = e.clientX;
+    startY = e.clientY;
+    startPanX = panX;
+    startPanY = panY;
+    mapWrap.classList.add("dragging");
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - startX, dy = e.clientY - startY;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragMoved = true;
+    panX = startPanX + dx;
+    panY = startPanY + dy;
+    applyTransform();
+  });
+
+  document.addEventListener("mouseup", () => {
+    isDragging = false;
+    mapWrap.classList.remove("dragging");
+  });
+
+  // capture phase: swallow the click that follows a drag so it doesn't
+  // register as a pin/unpin toggle on whatever's underneath the cursor
+  mapWrap.addEventListener("click", (e) => {
+    if (dragMoved) {
+      e.stopPropagation();
+      dragMoved = false;
+    }
+  }, true);
+
+  // dragging the map shouldn't leave a stale tooltip stuck on screen
+  mapWrap.addEventListener("mousedown", hideTooltip);
+
+  // ctrl+scroll (or trackpad pinch, reported as wheel+ctrlKey) to zoom,
+  // keeping the point under the cursor stationary
+  mapWrap.addEventListener("wheel", (e) => {
+    if (!e.ctrlKey) return;
+    e.preventDefault();
+    const rect = mapWrap.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    const contentX = (mx - panX) / zoom, contentY = (my - panY) / zoom;
+    zoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, zoom * (e.deltaY < 0 ? 1.1 : 1 / 1.1)));
+    panX = mx - contentX * zoom;
+    panY = my - contentY * zoom;
+    applyTransform();
+  }, { passive: false });
+
+  // ---- drag the splitter to resize the sidebar ----------------------
+  const splitter = document.getElementById("splitter");
+  const sidebar = document.getElementById("sidebar");
+  const SIDEBAR_MIN = 240, SIDEBAR_MAX = 640;
+  let resizing = false, resizeStartX = 0, resizeStartWidth = 0;
+
+  splitter.addEventListener("mousedown", (e) => {
+    resizing = true;
+    resizeStartX = e.clientX;
+    resizeStartWidth = sidebar.getBoundingClientRect().width;
+    splitter.classList.add("dragging");
+    document.body.classList.add("resizing");
+    e.preventDefault();
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!resizing) return;
+    const next = resizeStartWidth - (e.clientX - resizeStartX);
+    sidebar.style.width = Math.min(SIDEBAR_MAX, Math.max(SIDEBAR_MIN, next)) + "px";
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (!resizing) return;
+    resizing = false;
+    splitter.classList.remove("dragging");
+    document.body.classList.remove("resizing");
+  });
+
+  // ---- legend: the "Sensor Key" bar itself is both the collapse toggle
+  // and the drag handle for resizing (no separate resize bar) ------------
+  const legendToggle = document.getElementById("legendToggle");
+  const legendPanel = document.getElementById("legend");
+  const legendWrap = document.getElementById("legendWrap");
+  const LEGEND_MIN = 100, LEGEND_MAX = 520;
+  let legendDragging = false, legendDragMoved = false, legendStartY = 0, legendStartHeight = 0;
+  let legendSavedHeight = null;
+
+  legendToggle.addEventListener("mousedown", (e) => {
+    if (legendToggle.getAttribute("aria-expanded") !== "true") return;
+    legendDragging = true;
+    legendDragMoved = false;
+    legendStartY = e.clientY;
+    legendStartHeight = legendWrap.getBoundingClientRect().height;
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!legendDragging) return;
+    const dy = e.clientY - legendStartY;
+    if (Math.abs(dy) > 3) {
+      legendDragMoved = true;
+      document.body.classList.add("resizing-v");
+    }
+    if (legendDragMoved) {
+      legendWrap.style.height = Math.min(LEGEND_MAX, Math.max(LEGEND_MIN, legendStartHeight - dy)) + "px";
+    }
+  });
+
+  document.addEventListener("mouseup", () => {
+    legendDragging = false;
+    document.body.classList.remove("resizing-v");
+  });
+
+  legendToggle.addEventListener("click", () => {
+    if (legendDragMoved) {
+      legendDragMoved = false;
+      return;
+    }
+    const wasExpanded = legendToggle.getAttribute("aria-expanded") === "true";
+    const nowExpanded = !wasExpanded;
+    legendToggle.setAttribute("aria-expanded", String(nowExpanded));
+    legendPanel.classList.toggle("collapsed", wasExpanded);
+    legendToggle.querySelectorAll(".legend-arrow").forEach((a) => {
+      a.textContent = nowExpanded ? "◆" : "◇";
+    });
+    if (nowExpanded) {
+      if (legendSavedHeight) legendWrap.style.height = legendSavedHeight;
+    } else {
+      legendSavedHeight = legendWrap.style.height || null;
+      legendWrap.style.height = "";
+    }
+  });
+
+  render();
+  centerMap();
+})();
+</script>
