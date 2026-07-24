@@ -18,3 +18,6 @@ Show full breakdown on every roll — every die involved (base d20, each Accurac
 
 ## Turn Order
 No explicit round/turn tracker called out in the text. Keep following the actual turn-order rules in [`gm-reference.md`](gm-reference.md) (player-chosen order, strict hostile/ally alternation, one action per character per round) — just don't narrate the bookkeeping ("Round 2, Bull has not yet acted") unless something about it is actually in question.
+
+## Battle Map (visual layer)
+For fights where positioning is doing real work — multi-room layouts, elevation, hazards, chokepoints, multiple frame sizes navigating the same space — publish or update the interactive battle map (`tools/combat-map/battle-map.html`, see its README for the authoring workflow) alongside the text and state block, not instead of them. Redeploy it via the Artifact tool whenever positions or terrain change enough to matter, not on every single micro-move. Skip it for simple, spatially-trivial skirmishes where the state block already covers everything relevant — it's an added layer for fights where "where everyone is standing" is actually part of the tactics, not a replacement for the default text presentation.
